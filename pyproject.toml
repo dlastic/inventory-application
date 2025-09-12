@@ -1,0 +1,12 @@
+[project]
+name = "inventory-application"
+version = "0.1.0"
+description = "Inventory management Flask-based app for an imaginary store"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "flask>=3.1.2",
+    "psycopg2>=2.9.10",
+    "python-dotenv>=1.1.1",
+    "sqlalchemy>=2.0.43",
+]
