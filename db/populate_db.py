@@ -11,7 +11,7 @@ if not DB_URL:
 engine = create_engine(DB_URL)
 
 SQL = """
-DROP TABLE IF EXISTS items;
+DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS brands;
 
@@ -30,7 +30,7 @@ CREATE TABLE brands (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE items (
+CREATE TABLE products (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
