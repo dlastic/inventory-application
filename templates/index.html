@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <section>
+    <h2>Welcome to ElectroStore</h2>
+    <p>
+      ElectroStore is your one-stop shop for electronics, gadgets, and home appliances.
+      Browse our categories or view all products.
+    </p>
+    <ul>
+      <li>
+        <a href="{{ url_for('list_categories') }}">Browse Categories</a>
+      </li>
+      <li>
+        <a href="{{ url_for('list_products') }}">View All Products</a>
+      </li>
+    </ul>
+  </section>
+{% endblock %}
