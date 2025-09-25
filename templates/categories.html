@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <section>
+    <h2>Product Categories</h2>
+    <ul>
+      {% for category in categories %}
+        <li>
+          <a href="{{ url_for('view_category', category_id=category.id) }}">{{ category.name }}</a>
+        </li>
+      {% else %}
+        <li>No categories available.</li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endblock content %}
