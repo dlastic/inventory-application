@@ -26,7 +26,7 @@ def list_categories():
 def view_category(category_id):
     category = get_category_by_id(category_id)
     products = get_products_by_category(category_id)
-    return render_template("category.html", category=category, products=products)
+    return render_template("products.html", category=category, products=products)
 
 
 @app.route("/products")
