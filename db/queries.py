@@ -23,6 +23,11 @@ def fetch_one(SQL, params=None):
         return result.mappings().first()
 
 
+def execute_write(SQL, params=None):
+    with engine.begin() as conn:
+        conn.execute(text(SQL), params or {})
+
+
 def get_all_categories():
     SQL = """
     SELECT *
@@ -37,6 +42,14 @@ def get_category_by_id(category_id):
     WHERE id = :category_id;
     """
     return fetch_one(SQL, {"category_id": category_id})
+
+
+def add_category(name, description=None):
+    SQL = """
+    INSERT INTO categories (name, description)
+    VALUES (:name, :description);
+    """
+    execute_write(SQL, {"name": name, "description": description})
 
 
 def get_all_products():
