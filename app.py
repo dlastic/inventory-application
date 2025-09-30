@@ -70,3 +70,20 @@ def add_product():
         return redirect(url_for("list_products"))
     categories = queries.get_all_categories()
     return render_template("add_product.html", categories=categories)
+
+
+@app.route("/products/<int:product_id>/edit", methods=["GET", "POST"])
+def edit_product(product_id):
+    if request.method == "POST":
+        name = request.form["name"]
+        description = request.form["description"] or None
+        price = float(request.form["price"])
+        stock = int(request.form["stock"])
+        category_id = (
+            int(request.form["category_id"]) if request.form["category_id"] else None
+        )
+        queries.edit_product(product_id, name, description, price, stock, category_id)
+        return redirect(url_for("view_product", product_id=product_id))
+    categories = queries.get_all_categories()
+    product = queries.get_product_by_id(product_id)
+    return render_template("edit_product.html", product=product, categories=categories)

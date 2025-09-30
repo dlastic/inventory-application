@@ -17,6 +17,7 @@
         <strong>Category:</strong> {{ product.category.name }}
       </p>
     {% endif %}
+    <a href="{{ url_for('edit_product', product_id=product.id) }}">Edit Product</a>
     <a href="{{ url_for('list_products') }}">Back to Products</a>
   </section>
 

@@ -104,3 +104,27 @@ def add_product(name, description, price, stock, category_id):
             "category_id": category_id,
         },
     )
+
+
+def edit_product(product_id, name, description, price, stock, category_id):
+    SQL = """
+    UPDATE products
+    SET name = :name,
+        description = :description,
+        price = :price,
+        stock = :stock,
+        category_id = :category_id,
+        updated_at = NOW()
+    WHERE id = :product_id;
+    """
+    execute_write(
+        SQL,
+        {
+            "product_id": product_id,
+            "name": name,
+            "description": description,
+            "price": price,
+            "stock": stock,
+            "category_id": category_id,
+        },
+    )
