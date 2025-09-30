@@ -33,6 +33,17 @@ def add_category():
     return render_template("add_category.html")
 
 
+@app.route("/categories/<int:category_id>/edit", methods=["GET", "POST"])
+def edit_category(category_id):
+    category = queries.get_category_by_id(category_id)
+    if request.method == "POST":
+        name = request.form["name"]
+        description = request.form["description"]
+        queries.update_category(category_id, name, description)
+        return redirect(url_for("view_category", category_id=category_id))
+    return render_template("edit_category.html", category=category)
+
+
 @app.route("/products")
 def list_products():
     products = queries.get_all_products()

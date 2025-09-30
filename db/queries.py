@@ -52,6 +52,19 @@ def add_category(name, description=None):
     execute_write(SQL, {"name": name, "description": description})
 
 
+def update_category(category_id, name, description=None):
+    SQL = """
+    UPDATE categories
+    SET name = :name,
+        description = :description,
+        updated_at = NOW()
+    WHERE id = :category_id;
+    """
+    execute_write(
+        SQL, {"category_id": category_id, "name": name, "description": description}
+    )
+
+
 def get_all_products():
     SQL = """
     SELECT *
