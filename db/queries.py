@@ -87,3 +87,20 @@ def get_products_by_category(category_id):
     WHERE category_id = :category_id;
     """
     return fetch_all(SQL, {"category_id": category_id})
+
+
+def add_product(name, description, price, stock, category_id):
+    SQL = """
+    INSERT INTO products (name, description, price, stock, category_id)
+    VALUES (:name, :description, :price, :stock, :category_id)
+    """
+    return execute_write(
+        SQL,
+        {
+            "name": name,
+            "description": description,
+            "price": price,
+            "stock": stock,
+            "category_id": category_id,
+        },
+    )
