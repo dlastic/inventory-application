@@ -87,3 +87,9 @@ def edit_product(product_id):
     categories = queries.get_all_categories()
     product = queries.get_product_by_id(product_id)
     return render_template("edit_product.html", product=product, categories=categories)
+
+
+@app.route("/products/<int:product_id>/delete", methods=["POST"])
+def delete_product(product_id):
+    queries.delete_product(product_id)
+    return redirect(url_for("list_products"))

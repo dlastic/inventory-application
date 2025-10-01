@@ -128,3 +128,11 @@ def edit_product(product_id, name, description, price, stock, category_id):
             "category_id": category_id,
         },
     )
+
+
+def delete_product(product_id):
+    SQL = """
+    DELETE FROM products
+    WHERE id = :product_id;
+    """
+    execute_write(SQL, {"product_id": product_id})
