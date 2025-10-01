@@ -1,9 +1,6 @@
 import os
 
-from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
-
-load_dotenv()
 
 DB_URL = os.getenv("DB_URL")
 if not DB_URL:
@@ -63,6 +60,14 @@ def update_category(category_id, name, description=None):
     execute_write(
         SQL, {"category_id": category_id, "name": name, "description": description}
     )
+
+
+def delete_category(category_id):
+    SQL = """
+    DELETE FROM categories
+    WHERE id = :category_id;
+    """
+    execute_write(SQL, {"category_id": category_id})
 
 
 def get_all_products():

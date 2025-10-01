@@ -1,8 +1,11 @@
-from flask import Flask, redirect, render_template, request, url_for
+import os
+
+from flask import Flask, flash, redirect, render_template, request, url_for
 
 from db import queries
 
 app = Flask(__name__)
+app.secret_key = os.getenv("SECRET_KEY")
 
 
 @app.route("/")
@@ -42,6 +45,17 @@ def edit_category(category_id):
         queries.update_category(category_id, name, description)
         return redirect(url_for("view_category", category_id=category_id))
     return render_template("edit_category.html", category=category)
+
+
+@app.route("/categories/<int:category_id>/delete", methods=["POST"])
+def delete_category(category_id):
+    if category_id == 1:
+        flash("The default category cannot be deleted.", "error")
+        return redirect(url_for("list_categories"))
+
+    queries.delete_category(category_id)
+    flash("Category deleted successfully.", "success")
+    return redirect(url_for("list_categories"))
 
 
 @app.route("/products")
