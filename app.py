@@ -38,6 +38,10 @@ def add_category():
 
 @app.route("/categories/<int:category_id>/edit", methods=["GET", "POST"])
 def edit_category(category_id):
+    if category_id == 1:
+        flash("The default category cannot be edited.", "error")
+        return redirect(url_for("list_categories"))
+
     category = queries.get_category_by_id(category_id)
     if request.method == "POST":
         name = request.form["name"]
