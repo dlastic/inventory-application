@@ -28,7 +28,8 @@ def execute_write(SQL, params=None):
 def get_all_categories():
     SQL = """
     SELECT *
-    FROM categories;
+    FROM categories
+    ORDER BY name ASC;
     """
     return fetch_all(SQL)
 
@@ -73,7 +74,8 @@ def delete_category(category_id):
 def get_all_products():
     SQL = """
     SELECT *
-    FROM products;
+    FROM products
+    ORDER BY name ASC;
     """
     return fetch_all(SQL)
 
@@ -89,7 +91,8 @@ def get_product_by_id(product_id):
 def get_products_by_category(category_id):
     SQL = """
     SELECT * FROM products
-    WHERE category_id = :category_id;
+    WHERE category_id = :category_id
+    ORDER BY name ASC;
     """
     return fetch_all(SQL, {"category_id": category_id})
 
