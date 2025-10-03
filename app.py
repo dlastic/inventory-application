@@ -3,6 +3,7 @@ import os
 from flask import Flask, flash, redirect, render_template, request, url_for
 
 from db import queries
+from utils.utils import require_admin_password
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -37,21 +38,27 @@ def add_category():
 
 
 @app.route("/categories/<int:category_id>/edit", methods=["GET", "POST"])
+@require_admin_password()
 def edit_category(category_id):
     if category_id == 1:
         flash("The default category cannot be edited.", "error")
         return redirect(url_for("list_categories"))
 
     category = queries.get_category_by_id(category_id)
+
     if request.method == "POST":
         name = request.form["name"]
         description = request.form["description"]
         queries.update_category(category_id, name, description)
+        flash("Category updated successfully.", "success")
+
         return redirect(url_for("view_category", category_id=category_id))
+
     return render_template("edit_category.html", category=category)
 
 
 @app.route("/categories/<int:category_id>/delete", methods=["POST"])
+@require_admin_password()
 def delete_category(category_id):
     if category_id == 1:
         flash("The default category cannot be deleted.", "error")
@@ -91,6 +98,7 @@ def add_product():
 
 
 @app.route("/products/<int:product_id>/edit", methods=["GET", "POST"])
+@require_admin_password()
 def edit_product(product_id):
     if request.method == "POST":
         name = request.form["name"]
@@ -102,12 +110,16 @@ def edit_product(product_id):
         )
         queries.edit_product(product_id, name, description, price, stock, category_id)
         return redirect(url_for("view_product", product_id=product_id))
+
     categories = queries.get_all_categories()
     product = queries.get_product_by_id(product_id)
+    flash("Product updated successfully.", "success")
     return render_template("edit_product.html", product=product, categories=categories)
 
 
 @app.route("/products/<int:product_id>/delete", methods=["POST"])
+@require_admin_password()
 def delete_product(product_id):
     queries.delete_product(product_id)
+    flash("Product deleted successfully.", "success")
     return redirect(url_for("list_products"))
