@@ -35,9 +35,7 @@ def _get_cancel_url(**kwargs) -> str:
     return url_for("index")
 
 
-def verify_admin_password(entered_password: str) -> bool:
-    if not ADMIN_PASSWORD_HASH:
-        return False
+def _verify_admin_password(entered_password: str) -> bool:
     return check_password_hash(ADMIN_PASSWORD_HASH, entered_password)
 
 
@@ -57,7 +55,7 @@ def require_admin_password(template: str = "admin_password_form.html") -> Callab
                 return render_template(template, cancel_url=cancel_url, **kwargs)
 
             entered_password = request.form.get("admin_password")
-            if not entered_password or not verify_admin_password(entered_password):
+            if not entered_password or not _verify_admin_password(entered_password):
                 flash("Invalid admin password.", "error")
                 return render_template(template, cancel_url=cancel_url, **kwargs)
 
