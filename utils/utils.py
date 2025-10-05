@@ -19,6 +19,19 @@ def _is_admin_valid() -> bool:
     return (time.time() - ts) <= ADMIN_TTL_SECONDS
 
 
+def _get_cancel_url(**kwargs) -> str:
+    cancel_url = request.args.get("cancel")
+    if cancel_url:
+        return cancel_url
+
+    if "category_id" in kwargs:
+        return url_for("view_category", category_id=kwargs["category_id"])
+    if "product_id" in kwargs:
+        return url_for("view_product", product_id=kwargs["product_id"])
+
+    return url_for("index")
+
+
 def verify_admin_password(entered_password: str) -> bool:
     if not ADMIN_PASSWORD_HASH:
         return False
@@ -32,18 +45,7 @@ def require_admin_password(template: str = "admin_password_form.html") -> Callab
             if _is_admin_valid():
                 return f(*args, **kwargs)
 
-            cancel_url = request.args.get("cancel")
-            if not cancel_url:
-                if "category_id" in kwargs:
-                    cancel_url = url_for(
-                        "view_category", category_id=kwargs["category_id"]
-                    )
-                elif "product_id" in kwargs:
-                    cancel_url = url_for(
-                        "view_product", product_id=kwargs["product_id"]
-                    )
-                else:
-                    cancel_url = url_for("index")
+            cancel_url = _get_cancel_url(**kwargs)
 
             if request.method == "GET":
                 return render_template(template, cancel_url=cancel_url, **kwargs)
