@@ -3,10 +3,10 @@ import time
 from functools import wraps
 from typing import Callable
 
-from flask import flash, redirect, render_template, request, session
+from flask import flash, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash
 
-ADMIN_TTL_SECONDS = 60
+ADMIN_TTL_SECONDS = 10
 ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
 
 
@@ -32,16 +32,29 @@ def require_admin_password(template: str = "admin_password_form.html") -> Callab
             if _is_admin_valid():
                 return f(*args, **kwargs)
 
+            cancel_url = request.args.get("cancel")
+            if not cancel_url:
+                if "category_id" in kwargs:
+                    cancel_url = url_for(
+                        "view_category", category_id=kwargs["category_id"]
+                    )
+                elif "product_id" in kwargs:
+                    cancel_url = url_for(
+                        "view_product", product_id=kwargs["product_id"]
+                    )
+                else:
+                    cancel_url = url_for("index")
+
             if request.method == "GET":
-                return render_template(template, **kwargs)
+                return render_template(template, cancel_url=cancel_url, **kwargs)
 
             if "admin_password" not in request.form:
-                return render_template(template, **kwargs)
+                return render_template(template, cancel_url=cancel_url, **kwargs)
 
             entered_password = request.form.get("admin_password")
             if not entered_password or not verify_admin_password(entered_password):
                 flash("Invalid admin password.", "error")
-                return render_template(template, **kwargs)
+                return render_template(template, cancel_url=cancel_url, **kwargs)
 
             session.clear()
             session["is_admin"] = True
