@@ -7,7 +7,10 @@ from flask import flash, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash
 
 ADMIN_TTL_SECONDS = 10
-ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
+try:
+    ADMIN_PASSWORD_HASH: str = os.environ["ADMIN_PASSWORD_HASH"]
+except KeyError:
+    raise RuntimeError("ADMIN_PASSWORD_HASH environment variable not set.")
 
 
 def _is_admin_valid() -> bool:
