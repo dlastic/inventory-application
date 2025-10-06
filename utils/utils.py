@@ -2,6 +2,7 @@ import os
 import time
 from functools import wraps
 from typing import Callable
+from urllib.parse import urlparse
 
 from flask import flash, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash
@@ -22,9 +23,14 @@ def _is_admin_valid() -> bool:
     return (time.time() - ts) <= ADMIN_TTL_SECONDS
 
 
+def _is_safe_url(target: str) -> bool:
+    parsed_url = urlparse(target)
+    return parsed_url.scheme == "" and parsed_url.netloc == ""
+
+
 def _get_cancel_url(**kwargs) -> str:
     cancel_url = request.args.get("cancel")
-    if cancel_url:
+    if cancel_url and _is_safe_url(cancel_url):
         return cancel_url
 
     if "category_id" in kwargs:
