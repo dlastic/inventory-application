@@ -33,10 +33,10 @@ def _get_cancel_url(**kwargs) -> str:
     if cancel_url and _is_safe_url(cancel_url):
         return cancel_url
 
-    if "category_id" in kwargs:
-        return url_for("view_category", category_id=kwargs["category_id"])
-    if "product_id" in kwargs:
-        return url_for("view_product", product_id=kwargs["product_id"])
+    if category_id := kwargs.get("category_id"):
+        return url_for("view_category", category_id=category_id)
+    if product_id := kwargs.get("product_id"):
+        return url_for("view_product", product_id=product_id)
 
     return url_for("index")
 
