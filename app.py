@@ -58,7 +58,7 @@ def edit_category(category_id):
 
 
 @app.route("/categories/<int:category_id>/delete", methods=["POST"])
-@require_admin_password()
+@require_admin_password(mode="delete")
 def delete_category(category_id):
     if category_id == 1:
         flash("The default category cannot be deleted.", "error")
@@ -118,7 +118,7 @@ def edit_product(product_id):
 
 
 @app.route("/products/<int:product_id>/delete", methods=["POST"])
-@require_admin_password()
+@require_admin_password(mode="delete")
 def delete_product(product_id):
     queries.delete_product(product_id)
     flash("Product deleted successfully.", "success")

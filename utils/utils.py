@@ -45,7 +45,9 @@ def _verify_admin_password(entered_password: str) -> bool:
     return check_password_hash(ADMIN_PASSWORD_HASH, entered_password)
 
 
-def require_admin_password(template: str = "admin_password_form.html") -> Callable:
+def require_admin_password(
+    template: str = "admin_password_form.html", mode: str = "edit"
+) -> Callable:
     def decorator(f):
         @wraps(f)
         def wrapped(*args, **kwargs):
@@ -65,9 +67,12 @@ def require_admin_password(template: str = "admin_password_form.html") -> Callab
                 flash("Invalid admin password.", "error")
                 return render_template(template, cancel_url=cancel_url, **kwargs)
 
-            session.clear()
             session["is_admin"] = True
             session["is_admin_ts"] = time.time()
+
+            if mode == "delete":
+                return f(*args, **kwargs)
+            
             return redirect(request.path)
 
         return wrapped
