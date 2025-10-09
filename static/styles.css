@@ -1,0 +1,81 @@
+:root {
+  --color-bg: #f9f9f9;
+  --color-text-light: #f9f9f9;
+  --color-text-dark: #222;
+  --color-primary: #003357;
+  --color-secondary: #005fa3;
+  --color-error: #cc0000;
+  --color-success: #007a33;
+
+  --font-family: "Segoe UI", Arial, sans-serif;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 48px;
+
+  --max-width: 1100px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100%;
+  min-height: 100vh;
+  font-family: var(--font-family);
+  color: var(--color-text-dark);
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+header,
+footer {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  padding: var(--spacing-md);
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 a {
+  color: var(--color-text-light);
+  text-decoration: none;
+}
+
+nav ul {
+  display: flex;
+  gap: var(--spacing-md);
+  list-style: none;
+}
+
+nav a {
+  color: var(--color-text-light);
+  text-decoration: none;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-lg);
+}
+
+footer {
+  text-align: center;
+}
