@@ -9,13 +9,26 @@
 
   --font-family: "Segoe UI", Arial, sans-serif;
 
+  --radius-small: 4px;
+  --radius-medium: 8px;
+  --radius-large: 16px;
+
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 48px;
 
+  --font-xs: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-md: 1rem;
+  --font-lg: 1.25rem;
+  --font-xl: 1.5rem;
+  --font-xxl: 2rem;
+
   --max-width: 1100px;
+
+  --transition-speed: 0.5s;
 }
 
 *,
@@ -63,6 +76,7 @@ nav ul {
 nav a {
   color: var(--color-text-light);
   text-decoration: none;
+  font-size: var(--font-lg);
 }
 
 nav a:hover {
@@ -74,6 +88,41 @@ main {
   display: flex;
   justify-content: center;
   padding: var(--spacing-lg);
+}
+
+section {
+  max-width: var(--max-width);
+  width: 100%;
+  background: var(--color-text-light);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-medium);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+section p {
+  margin-bottom: var(--spacing-md);
+}
+
+section ul {
+  list-style: none;
+}
+
+section a {
+  color: var(--color-secondary);
+  text-decoration: none;
+  transition: color var(--transition-speed);
+  display: inline-block;
+  margin-top: var(--spacing-sm);
+}
+
+section a:hover {
+  text-decoration: underline;
+  color: var(--color-primary);
+}
+
+h2 {
+  margin-bottom: var(--spacing-md);
+  color: var(--color-primary);
 }
 
 footer {
