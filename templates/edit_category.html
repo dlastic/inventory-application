@@ -9,7 +9,7 @@
     <label for="description">Category Description:</label>
     <textarea id="description" name="description" required>{{ category.description }}</textarea>
 
-    <button type="submit">Edit Category</button>
-    <a href="{{ url_for('view_category', category_id=category.id) }}">Cancel</a>
+    <button class="btn btn--edit" type="submit">Edit Category</button>
+    <a class="btn btn--cancel" href="{{ url_for('view_category', category_id=category.id) }}">Cancel</a>
   </form>
 {% endblock content %}

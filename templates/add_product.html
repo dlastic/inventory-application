@@ -23,7 +23,7 @@
       {% endfor %}
     </select>
 
-    <button type="submit">Add Product</button>
-    <a href="{{ url_for('list_products') }}">Cancel</a>
+    <button class="btn btn--add" type="submit">Add Product</button>
+    <a class="btn btn--cancel" href="{{ url_for('list_products') }}">Cancel</a>
   </form>
 {% endblock content %}
