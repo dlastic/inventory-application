@@ -196,6 +196,7 @@ h2 {
 .form input,
 .form select,
 .form textarea {
+  font-family: inherit;
   width: 100%;
   max-width: 280px;
   padding: var(--spacing-sm);

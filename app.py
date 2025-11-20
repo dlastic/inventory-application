@@ -109,11 +109,11 @@ def edit_product(product_id):
             int(request.form["category_id"]) if request.form["category_id"] else None
         )
         queries.edit_product(product_id, name, description, price, stock, category_id)
+        flash("Product updated successfully.", "success")
         return redirect(url_for("view_product", product_id=product_id))
 
     categories = queries.get_all_categories()
     product = queries.get_product_by_id(product_id)
-    flash("Product updated successfully.", "success")
     return render_template("edit_product.html", product=product, categories=categories)
 
 
