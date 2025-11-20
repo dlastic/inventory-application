@@ -112,6 +112,7 @@ section p {
 
 section ul {
   list-style: none;
+  margin-bottom: var(--spacing-md);
 }
 
 section ul a {

@@ -13,6 +13,8 @@
       {% endfor %}
     </ul>
 
-    <a class="btn btn--add" href="{{ url_for('add_category') }}">Add Category</a>
+    <div class="form__actions">
+      <a class="btn btn--add" href="{{ url_for('add_category') }}">Add Category</a>
+    </div>
   </section>
 {% endblock content %}
