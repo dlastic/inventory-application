@@ -1,15 +1,19 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h2>Add Category</h2>
-  <form method="post" action="{{ url_for('add_category') }}">
-    <label for="name">Category Name:</label>
-    <input type="text" id="name" name="name" required />
+  <section>
+    <h2>Add Category</h2>
+    <form class="form" method="post" action="{{ url_for('add_category') }}">
+      <label for="name">Category Name:</label>
+      <input type="text" id="name" name="name" required />
 
-    <label for="description">Category Description:</label>
-    <textarea id="description" name="description" required></textarea>
+      <label for="description">Category Description:</label>
+      <textarea id="description" name="description" required></textarea>
 
-    <button class="btn btn--add" type="submit">Add Category</button>
-    <a class="btn btn--cancel" href="{{ url_for('list_categories') }}">Cancel</a>
-  </form>
+      <div class="_form_actions">
+        <button class="btn btn--add" type="submit">Add Category</button>
+        <a class="btn btn--cancel" href="{{ url_for('list_categories') }}">Cancel</a>
+      </div>
+    </form>
+  </section>
 {% endblock content %}

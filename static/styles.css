@@ -193,7 +193,9 @@ h2 {
   color: var(--color-primary);
 }
 
-.form input {
+.form input,
+.form select,
+.form textarea {
   width: 100%;
   max-width: 280px;
   padding: var(--spacing-sm);
@@ -202,7 +204,8 @@ h2 {
   border-radius: var(--radius-sm);
 }
 
-.form input:focus {
+.form input:focus,
+.form textarea:focus {
   border-color: var(--color-secondary);
   outline: none;
 }
@@ -211,6 +214,7 @@ h2 {
   display: flex;
   justify-content: center;
   gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
 }
 
 footer {
