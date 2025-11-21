@@ -178,6 +178,41 @@ section ul a:hover {
   color: var(--color-primary);
 }
 
+.index-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  text-align: left;
+}
+
+.action-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 1px solid #e1e6ee;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--color-primary);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.action-card h3 {
+  margin-bottom: 6px;
+  color: var(--color-primary);
+}
+
+.action-card p {
+  margin: 0;
+  color: #4a5568;
+}
+
+.action-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
 h2 {
   margin-bottom: var(--spacing-md);
   color: var(--color-primary);

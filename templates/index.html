@@ -7,13 +7,21 @@
       ElectroStore is your one-stop shop for electronics, gadgets, and home appliances.
       Browse our categories or view all products.
     </p>
-    <ul>
-      <li>
-        <a href="{{ url_for('list_categories') }}">Browse Categories</a>
-      </li>
-      <li>
-        <a href="{{ url_for('list_products') }}">View All Products</a>
-      </li>
-    </ul>
+    <div class="index-actions">
+      <a class="action-card" href="{{ url_for('list_categories') }}">
+        <div>
+          <h3>Browse Categories</h3>
+          <p>Explore items by type.</p>
+        </div>
+        <span class="action-arrow">➜</span>
+      </a>
+      <a class="action-card" href="{{ url_for('list_products') }}">
+        <div>
+          <h3>View All Products</h3>
+          <p>See everything in one list.</p>
+        </div>
+        <div class="action-arrow">➜</div>
+      </a>
+    </div>
   </section>
 {% endblock content %}
