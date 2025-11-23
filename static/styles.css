@@ -302,7 +302,6 @@ h2 {
   display: flex;
   justify-content: center;
   gap: var(--spacing-sm);
-  margin-top: var(--spacing-sm);
 }
 
 footer {
