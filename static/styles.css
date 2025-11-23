@@ -178,14 +178,14 @@ section ul a:hover {
   color: var(--color-primary);
 }
 
-.index-actions {
+.card-container {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
   text-align: left;
 }
 
-.action-card {
+.card {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -198,17 +198,18 @@ section ul a:hover {
   transition: transform var(--transition-speed), box-shadow var(--transition-speed);
 }
 
-.action-card h3 {
-  margin-bottom: 6px;
-  color: var(--color-primary);
+.card div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
 }
 
-.action-card p {
+.card p {
   margin: 0;
   color: #4a5568;
 }
 
-.action-card:hover {
+.card:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
 }
