@@ -34,7 +34,7 @@
             </button>
           </form>
         {% endif %}
-        <a class="btn btn--add" href="{{ url_for('add_product') }}">Add Product</a>
+        <a class="btn btn--add" href="{{ url_for('add_product', category_id=category.id if category else None) }}">Add Product</a>
       </div>
     </div>
   </section>

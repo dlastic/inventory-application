@@ -18,9 +18,13 @@
 
       <label for="category">Category:</label>
       <select id="category" name="category_id" required>
-        <option value="" disabled selected>Select a category</option>
+        <option value="" disabled {% if not selected_category_id %}selected{% endif %}>
+          Select a category
+        </option>
         {% for category in categories %}
-          <option value="{{ category.id }}">{{ category.name }}</option>
+          <option value="{{ category.id }}" {% if selected_category_id == category.id %}selected{% endif %}>
+            {{ category.name }}
+          </option>
         {% endfor %}
       </select>
       <div class="form__actions">

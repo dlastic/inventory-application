@@ -93,8 +93,14 @@ def add_product():
         )
         queries.add_product(name, description, price, stock, category_id)
         return redirect(url_for("list_products"))
+
     categories = queries.get_all_categories()
-    return render_template("add_product.html", categories=categories)
+    selected_category_id = request.args.get("category_id", type=int)
+    return render_template(
+        "add_product.html",
+        categories=categories,
+        selected_category_id=selected_category_id,
+    )
 
 
 @app.route("/products/<int:product_id>/edit", methods=["GET", "POST"])
