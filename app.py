@@ -92,7 +92,7 @@ def add_product():
             int(request.form["category_id"]) if request.form["category_id"] else None
         )
         queries.add_product(name, description, price, stock, category_id)
-        return redirect(url_for("list_products"))
+        return redirect(url_for("view_category", category_id=category_id))
 
     categories = queries.get_all_categories()
     selected_category_id = request.args.get("category_id", type=int)
