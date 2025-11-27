@@ -29,7 +29,8 @@
       </select>
       <div class="form__actions">
         <button class="btn btn--add" type="submit">Add Product</button>
-        <a class="btn btn--cancel" href="{{ url_for('list_products') }}">Cancel</a>
+        <a class="btn btn--cancel"
+           href="{{ url_for('view_category', category_id=selected_category_id) if selected_category_id else url_for('list_products') }}">Cancel</a>
       </div>
     </form>
   </section>
