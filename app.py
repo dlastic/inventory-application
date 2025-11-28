@@ -91,7 +91,12 @@ def add_product():
         category_id = (
             int(request.form["category_id"]) if request.form["category_id"] else None
         )
+        category_name = queries.get_category_by_id(category_id)["name"]
         queries.add_product(name, description, price, stock, category_id)
+        flash(
+            f'Product "{name}" was successfully added to the "{category_name}" category.',
+            "success",
+        )
         return redirect(url_for("view_category", category_id=category_id))
 
     categories = queries.get_all_categories()
