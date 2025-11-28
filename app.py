@@ -33,6 +33,7 @@ def add_category():
         name = request.form["name"]
         description = request.form["description"]
         queries.add_category(name, description)
+        flash(f'Category "{name}" was successfully created.', "success")
         return redirect(url_for("list_categories"))
     return render_template("add_category.html")
 
