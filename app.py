@@ -67,6 +67,7 @@ def delete_category(category_id):
 
     queries.delete_category(category_id)
     flash("Category deleted successfully.", "success")
+    flash('Deleted products moved to default category ("Uncategorized")', "success")
     return redirect(url_for("list_categories"))
 
 
