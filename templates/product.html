@@ -42,6 +42,7 @@
             Delete Product
           </button>
         </form>
+        <a class="btn btn--back" href="{{ url_for('view_category', category_id=product.category_id) }}">Back to Category</a>
         <a class="btn btn--back" href="{{ url_for('list_products') }}">Back to Products</a>
       </div>
     </div>
