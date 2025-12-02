@@ -18,12 +18,10 @@
           <span class="label">Stock</span>
           <span class="value">{{ product.stock }}</span>
         </div>
-        {% if product.category %}
-          <div class="product-field">
-            <span class="label">Category</span>
-            <span class="value">{{ product.category.name }}</span>
-          </div>
-        {% endif %}
+        <div class="product-field">
+          <span class="label">Category</span>
+          <span class="value">{{ category.name }}</span>
+        </div>
       </div>
 
       <div class="product-description">

@@ -80,7 +80,8 @@ def list_products():
 @app.route("/products/<int:product_id>")
 def view_product(product_id):
     product = queries.get_product_by_id(product_id)
-    return render_template("product.html", product=product)
+    category = queries.get_category_by_id(product["category_id"])
+    return render_template("product.html", product=product, category=category)
 
 
 @app.route("/products/add", methods=["GET", "POST"])
