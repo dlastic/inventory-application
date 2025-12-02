@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, flash, redirect, render_template, request, url_for
+from sqlalchemy.exc import IntegrityError
 
 from db import queries
 from utils.utils import require_admin_password
@@ -86,6 +87,9 @@ def view_product(product_id):
 
 @app.route("/products/add", methods=["GET", "POST"])
 def add_product():
+    categories = queries.get_all_categories()
+    selected_category_id = request.args.get("category_id", type=int)
+
     if request.method == "POST":
         name = request.form["name"]
         description = request.form["description"] or None
@@ -94,20 +98,38 @@ def add_product():
         category_id = (
             int(request.form["category_id"]) if request.form["category_id"] else None
         )
-        category_name = queries.get_category_by_id(category_id)["name"]
-        queries.add_product(name, description, price, stock, category_id)
-        flash(
-            f'Product "{name}" was successfully added to the "{category_name}" category.',
-            "success",
-        )
-        return redirect(url_for("view_category", category_id=category_id))
 
-    categories = queries.get_all_categories()
-    selected_category_id = request.args.get("category_id", type=int)
+        form_data = {
+            "name": name,
+            "description": description,
+            "price": price,
+            "stock": stock,
+            "category_id": category_id,
+        }
+
+        try:
+            queries.add_product(name, description, price, stock, category_id)
+            category_name = queries.get_category_by_id(category_id)["name"]
+            flash(
+                f'Product "{name}" was successfully added to the "{category_name}" category.',
+                "success",
+            )
+            return redirect(url_for("view_category", category_id=category_id))
+        except IntegrityError:
+            flash(f'Product "{name}" already exists.', "error")
+
+        return render_template(
+            "add_product.html",
+            categories=categories,
+            selected_category_id=category_id,
+            form_data=form_data,
+        )
+
     return render_template(
         "add_product.html",
         categories=categories,
         selected_category_id=selected_category_id,
+        form_data={},
     )
 
 
