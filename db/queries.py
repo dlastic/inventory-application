@@ -1,11 +1,8 @@
-import os
+from sqlalchemy import text
 
-from sqlalchemy import create_engine, text
+from db.connection import get_engine
 
-DB_URL = os.getenv("DB_URL")
-if not DB_URL:
-    raise ValueError("DB_URL environment variable not set")
-engine = create_engine(DB_URL)
+engine = get_engine()
 
 
 def fetch_all(SQL, params=None):

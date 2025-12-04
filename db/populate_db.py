@@ -1,14 +1,6 @@
-import os
+from sqlalchemy import text
 
-from dotenv import load_dotenv
-from sqlalchemy import create_engine, text
-
-load_dotenv()
-
-DB_URL = os.getenv("DB_URL")
-if not DB_URL:
-    raise ValueError("DB_URL environment variable not set")
-engine = create_engine(DB_URL)
+from db.connection import get_engine
 
 SQL = """
 DROP TABLE IF EXISTS products;
@@ -91,7 +83,8 @@ INSERT INTO products (name, description, price, stock, brand_id, category_id) VA
 """
 
 
-def main():
+def main() -> None:
+    engine = get_engine()
     with engine.begin() as conn:
         conn.execute(text(SQL))
     print("Database populated with initial data.")
