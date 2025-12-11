@@ -383,6 +383,20 @@ h2 {
   gap: var(--spacing-sm);
 }
 
+.form-error {
+  color: var(--color-error);
+  background-color: #fdecea;
+  border: 1px solid var(--color-error-dark);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-sm);
+  width: 100%;
+  max-width: 280px;
+  text-align: left;
+  margin-top: -8px;
+  margin-bottom: var(--spacing-sm);
+}
+
 footer {
   text-align: center;
 }

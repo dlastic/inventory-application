@@ -4,11 +4,15 @@
   <section>
     <h2>Add Category</h2>
     <form class="form" method="post" action="{{ url_for('add_category') }}">
-      <label for="name">Category Name:</label>
-      <input type="text" id="name" name="name" required />
+      {{ form.hidden_tag() }}
 
-      <label for="description">Category Description:</label>
-      <textarea id="description" name="description" required></textarea>
+      {% for field in form %}
+        {% if field.type != 'CSRFTokenField' %}
+          {{ field.label }}
+          {{ field(class="form-control") }}
+          {% for error in field.errors %}<div class="form-error">{{ error }}</div>{% endfor %}
+        {% endif %}
+      {% endfor %}
 
       <div class="form__actions">
         <button class="btn btn--add" type="submit">Add Category</button>

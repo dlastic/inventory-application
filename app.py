@@ -4,6 +4,7 @@ from flask import Flask, flash, redirect, render_template, request, url_for
 from sqlalchemy.exc import IntegrityError
 
 from db import queries
+from forms import CategoryForm
 from utils.utils import require_admin_password
 
 app = Flask(__name__)
@@ -30,13 +31,13 @@ def view_category(category_id):
 
 @app.route("/categories/add", methods=["GET", "POST"])
 def add_category():
-    if request.method == "POST":
-        name = request.form["name"]
-        description = request.form["description"]
+    form = CategoryForm()
+    if form.validate_on_submit():
+        name, description = form.name.data, form.description.data
         queries.add_category(name, description)
         flash(f'Category "{name}" was successfully created.', "success")
         return redirect(url_for("list_categories"))
-    return render_template("add_category.html")
+    return render_template("add_category.html", form=form)
 
 
 @app.route("/categories/<int:category_id>/edit", methods=["GET", "POST"])

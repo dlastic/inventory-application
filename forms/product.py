@@ -3,9 +3,9 @@ from wtforms import DecimalField, IntegerField, SelectField, StringField, TextAr
 from wtforms.validators import DataRequired, Length, NumberRange
 
 
-class Product(FlaskForm):
+class ProductForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired(), Length(max=50)])
-    description = TextAreaField("Description")
+    description = TextAreaField("Description", validators=[DataRequired()])
     price = DecimalField("Price", validators=[DataRequired(), NumberRange(min=0)])
     stock = IntegerField("Stock", validators=[DataRequired(), NumberRange(min=0)])
     category_id = SelectField("Category", coerce=int)
