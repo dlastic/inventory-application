@@ -37,7 +37,15 @@ def add_category():
         queries.add_category(name, description)
         flash(f'Category "{name}" was successfully created.', "success")
         return redirect(url_for("list_categories"))
-    return render_template("add_category.html", form=form)
+    return render_template(
+        "category_form.html",
+        form=form,
+        title="Add Category",
+        button_text="Add Category",
+        button_class="btn--add",
+        cancel_url=url_for("list_categories"),
+        action_url=url_for("add_category"),
+    )
 
 
 @app.route("/categories/<int:category_id>/edit", methods=["GET", "POST"])
@@ -48,16 +56,21 @@ def edit_category(category_id):
         return redirect(url_for("list_categories"))
 
     category = queries.get_category_by_id(category_id)
-
-    if request.method == "POST":
-        name = request.form["name"]
-        description = request.form["description"]
-        queries.update_category(category_id, name, description)
+    form = CategoryForm(obj=category)
+    if form.validate_on_submit():
+        queries.update_category(category_id, form.name.data, form.description.data)
         flash("Category updated successfully.", "success")
-
         return redirect(url_for("view_category", category_id=category_id))
 
-    return render_template("edit_category.html", category=category)
+    return render_template(
+        "category_form.html",
+        form=form,
+        title=f"{category.name} – Edit Category",
+        button_text="Edit Category",
+        button_class="btn--edit",
+        cancel_url=url_for("view_category", category_id=category.id),
+        action_url=url_for("edit_category", category_id=category.id),
+    )
 
 
 @app.route("/categories/<int:category_id>/delete", methods=["POST"])
