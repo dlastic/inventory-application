@@ -4,8 +4,7 @@ from flask import Flask, flash, redirect, render_template, request, url_for
 from sqlalchemy.exc import IntegrityError
 
 from db import queries
-from forms import CategoryForm
-from utils.utils import require_admin_password
+from forms import CategoryForm, ProductForm
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -49,7 +48,6 @@ def add_category():
 
 
 @app.route("/categories/<int:category_id>/edit", methods=["GET", "POST"])
-@require_admin_password()
 def edit_category(category_id):
     if category_id == 1:
         flash("The default category cannot be edited.", "error")
@@ -74,7 +72,6 @@ def edit_category(category_id):
 
 
 @app.route("/categories/<int:category_id>/delete", methods=["POST"])
-@require_admin_password(mode="delete")
 def delete_category(category_id):
     if category_id == 1:
         flash("The default category cannot be deleted.", "error")
@@ -103,27 +100,23 @@ def view_product(product_id):
 def add_product():
     categories = queries.get_all_categories()
     selected_category_id = request.args.get("category_id", type=int)
+    form = ProductForm()
+    form.category_id.choices = [(c["id"], c["name"]) for c in categories]
+    form.category_id.data = selected_category_id or 1
 
-    if request.method == "POST":
-        name = request.form["name"]
-        description = request.form["description"] or None
-        price = float(request.form["price"])
-        stock = int(request.form["stock"])
-        category_id = (
-            int(request.form["category_id"]) if request.form["category_id"] else None
+    if form.validate_on_submit():
+        name = form.name.data
+        description = form.description.data
+        price = form.price.data
+        stock = form.stock.data
+        category_id = form.category_id.data
+        category_name = next(
+            (label for val, label in form.category_id.choices if val == category_id),
+            None,
         )
-
-        form_data = {
-            "name": name,
-            "description": description,
-            "price": price,
-            "stock": stock,
-            "category_id": category_id,
-        }
 
         try:
             queries.add_product(name, description, price, stock, category_id)
-            category_name = queries.get_category_by_id(category_id)["name"]
             flash(
                 f'Product "{name}" was successfully added to the "{category_name}" category.',
                 "success",
@@ -132,23 +125,20 @@ def add_product():
         except IntegrityError:
             flash(f'Product "{name}" already exists.', "error")
 
-        return render_template(
-            "add_product.html",
-            categories=categories,
-            selected_category_id=category_id,
-            form_data=form_data,
-        )
-
     return render_template(
-        "add_product.html",
-        categories=categories,
-        selected_category_id=selected_category_id,
-        form_data={},
+        "product_form.html",
+        form=form,
+        title="Add Product",
+        button_text="Add Product",
+        button_class="btn--add",
+        cancel_url=url_for("view_category", category_id=selected_category_id)
+        if selected_category_id
+        else url_for("list_products"),
+        action_url=url_for("add_product"),
     )
 
 
 @app.route("/products/<int:product_id>/edit", methods=["GET", "POST"])
-@require_admin_password()
 def edit_product(product_id):
     if request.method == "POST":
         name = request.form["name"]
@@ -168,7 +158,6 @@ def edit_product(product_id):
 
 
 @app.route("/products/<int:product_id>/delete", methods=["POST"])
-@require_admin_password(mode="delete")
 def delete_product(product_id):
     queries.delete_product(product_id)
     flash("Product deleted successfully.", "success")
