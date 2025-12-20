@@ -4,7 +4,7 @@ from flask import Flask, flash, redirect, render_template, request, url_for
 from sqlalchemy.exc import IntegrityError
 
 from db import queries
-from forms import CategoryForm, ProductForm
+from forms import CategoryForm, ProductForm, handle_product_form
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -98,32 +98,31 @@ def view_product(product_id):
 
 @app.route("/products/add", methods=["GET", "POST"])
 def add_product():
-    categories = queries.get_all_categories()
-    selected_category_id = request.args.get("category_id", type=int)
     form = ProductForm()
-    form.category_id.choices = [(c["id"], c["name"]) for c in categories]
-    form.category_id.data = selected_category_id or 1
+    data, category_name = handle_product_form(form)
 
-    if form.validate_on_submit():
-        name = form.name.data
-        description = form.description.data
-        price = form.price.data
-        stock = form.stock.data
-        category_id = form.category_id.data
-        category_name = next(
-            (label for val, label in form.category_id.choices if val == category_id),
-            None,
-        )
-
+    if data:
         try:
-            queries.add_product(name, description, price, stock, category_id)
+            queries.add_product(**data)
             flash(
-                f'Product "{name}" was successfully added to the "{category_name}" category.',
+                f'Product "{data["name"]}" was successfully added to the "{category_name}" category.',
                 "success",
             )
-            return redirect(url_for("view_category", category_id=category_id))
+            return redirect(url_for("view_category", category_id=data["category_id"]))
         except IntegrityError:
-            flash(f'Product "{name}" already exists.', "error")
+            flash(f'Product "{data["name"]}" already exists.', "error")
+
+    selected_category_id = request.args.get("category_id", type=int)
+    if request.method == "GET":
+        form.category_id.data = selected_category_id or 1
+    elif request.method == "POST":
+        selected_category_id = form.category_id.data
+
+    cancel_url = (
+        url_for("view_category", category_id=selected_category_id)
+        if selected_category_id
+        else url_for("list_products")
+    )
 
     return render_template(
         "product_form.html",
@@ -131,30 +130,41 @@ def add_product():
         title="Add Product",
         button_text="Add Product",
         button_class="btn--add",
-        cancel_url=url_for("view_category", category_id=selected_category_id)
-        if selected_category_id
-        else url_for("list_products"),
+        cancel_url=cancel_url,
         action_url=url_for("add_product"),
     )
 
 
 @app.route("/products/<int:product_id>/edit", methods=["GET", "POST"])
 def edit_product(product_id):
-    if request.method == "POST":
-        name = request.form["name"]
-        description = request.form["description"] or None
-        price = float(request.form["price"])
-        stock = int(request.form["stock"])
-        category_id = (
-            int(request.form["category_id"]) if request.form["category_id"] else None
-        )
-        queries.edit_product(product_id, name, description, price, stock, category_id)
-        flash("Product updated successfully.", "success")
-        return redirect(url_for("view_product", product_id=product_id))
-
-    categories = queries.get_all_categories()
     product = queries.get_product_by_id(product_id)
-    return render_template("edit_product.html", product=product, categories=categories)
+    if not product:
+        flash("Product not found.", "error")
+        return redirect(url_for("list_products"))
+
+    form = ProductForm()
+    data, category_name = handle_product_form(form, product)
+
+    if data:
+        try:
+            queries.edit_product(product_id, **data)
+            flash(
+                f'Product "{data["name"]}" was successfully updated in the "{category_name}" category.',
+                "success",
+            )
+            return redirect(url_for("view_product", product_id=product_id))
+        except IntegrityError:
+            flash(f'Product "{data["name"]}" already exists.', "error")
+
+    return render_template(
+        "product_form.html",
+        form=form,
+        title="Edit Product",
+        button_text="Save Changes",
+        button_class="btn--edit",
+        cancel_url=url_for("view_product", product_id=product_id),
+        action_url=url_for("edit_product", product_id=product_id),
+    )
 
 
 @app.route("/products/<int:product_id>/delete", methods=["POST"])
