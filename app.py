@@ -32,10 +32,14 @@ def view_category(category_id):
 def add_category():
     form = CategoryForm()
     if form.validate_on_submit():
-        name, description = form.name.data, form.description.data
-        queries.add_category(name, description)
-        flash(f'Category "{name}" was successfully created.', "success")
-        return redirect(url_for("list_categories"))
+        try:
+            name, description = form.name.data, form.description.data
+            queries.add_category(name, description)
+            flash(f'Category "{name}" was successfully created.', "success")
+            return redirect(url_for("list_categories"))
+        except IntegrityError:
+            flash(f'Category "{name}" already exists.', "error")
+
     return render_template(
         "category_form.html",
         form=form,
@@ -56,9 +60,13 @@ def edit_category(category_id):
     category = queries.get_category_by_id(category_id)
     form = CategoryForm(obj=category)
     if form.validate_on_submit():
-        queries.update_category(category_id, form.name.data, form.description.data)
-        flash("Category updated successfully.", "success")
-        return redirect(url_for("view_category", category_id=category_id))
+        try:
+            name, description = form.name.data, form.description.data
+            queries.update_category(category_id, name, description)
+            flash("Category updated successfully.", "success")
+            return redirect(url_for("view_category", category_id=category_id))
+        except IntegrityError:
+            flash(f'Category "{name}" already exists.', "error")
 
     return render_template(
         "category_form.html",
