@@ -1,143 +1,97 @@
-from sqlalchemy import text
+from sqlalchemy import select
+from sqlalchemy.orm import sessionmaker
 
-from db.connection import get_engine
+from db.connection import engine
+from db.models import Category, Product
 
-engine = get_engine()
-
-
-def fetch_all(SQL, params=None):
-    with engine.connect() as conn:
-        result = conn.execute(text(SQL), params or {})
-        return result.mappings().all()
-
-
-def fetch_one(SQL, params=None):
-    with engine.connect() as conn:
-        result = conn.execute(text(SQL), params or {})
-        return result.mappings().first()
-
-
-def execute_write(SQL, params=None):
-    with engine.begin() as conn:
-        conn.execute(text(SQL), params or {})
+Session = sessionmaker(bind=engine)
 
 
 def get_all_categories():
-    SQL = """
-    SELECT *
-    FROM categories
-    ORDER BY name ASC;
-    """
-    return fetch_all(SQL)
+    session = Session()
+    stmt = select(Category).order_by(Category.name.asc())
+    return session.scalars(stmt).all()
 
 
 def get_category_by_id(category_id):
-    SQL = """
-    SELECT * FROM categories
-    WHERE id = :category_id;
-    """
-    return fetch_one(SQL, {"category_id": category_id})
-
-
-def add_category(name, description=None):
-    SQL = """
-    INSERT INTO categories (name, description)
-    VALUES (:name, :description);
-    """
-    execute_write(SQL, {"name": name, "description": description})
-
-
-def update_category(category_id, name, description=None):
-    SQL = """
-    UPDATE categories
-    SET name = :name,
-        description = :description,
-        updated_at = NOW()
-    WHERE id = :category_id;
-    """
-    execute_write(
-        SQL, {"category_id": category_id, "name": name, "description": description}
-    )
-
-
-def delete_category(category_id):
-    SQL = """
-    DELETE FROM categories
-    WHERE id = :category_id;
-    """
-    execute_write(SQL, {"category_id": category_id})
+    session = Session()
+    stmt = select(Category).where(Category.id == category_id)
+    return session.scalars(stmt).first()
 
 
 def get_all_products():
-    SQL = """
-    SELECT *
-    FROM products
-    ORDER BY name ASC;
-    """
-    return fetch_all(SQL)
+    session = Session()
+    stmt = select(Product).order_by(Product.name.asc())
+    return session.scalars(stmt).all()
 
 
 def get_product_by_id(product_id):
-    SQL = """
-    SELECT * FROM products
-    WHERE id = :product_id;
-    """
-    return fetch_one(SQL, {"product_id": product_id})
+    session = Session()
+    return session.get(Product, product_id)
 
 
 def get_products_by_category(category_id):
-    SQL = """
-    SELECT * FROM products
-    WHERE category_id = :category_id
-    ORDER BY name ASC;
-    """
-    return fetch_all(SQL, {"category_id": category_id})
+    session = Session()
+    stmt = (
+        select(Product)
+        .where(Product.category_id == category_id)
+        .order_by(Product.name.asc())
+    )
+    return session.scalars(stmt).all()
+
+
+def add_category(name, description):
+    session = Session()
+    category = Category(name=name, description=description)
+    session.add(category)
+    session.commit()
 
 
 def add_product(name, description, price, stock, category_id):
-    SQL = """
-    INSERT INTO products (name, description, price, stock, category_id)
-    VALUES (:name, :description, :price, :stock, :category_id)
-    """
-    return execute_write(
-        SQL,
-        {
-            "name": name,
-            "description": description,
-            "price": price,
-            "stock": stock,
-            "category_id": category_id,
-        },
+    session = Session()
+    product = Product(
+        name=name,
+        description=description,
+        price=price,
+        stock=stock,
+        category_id=category_id,
     )
+    session.add(product)
+    session.commit()
 
 
-def edit_product(product_id, name, description, price, stock, category_id):
-    SQL = """
-    UPDATE products
-    SET name = :name,
-        description = :description,
-        price = :price,
-        stock = :stock,
-        category_id = :category_id,
-        updated_at = NOW()
-    WHERE id = :product_id;
-    """
-    execute_write(
-        SQL,
-        {
-            "product_id": product_id,
-            "name": name,
-            "description": description,
-            "price": price,
-            "stock": stock,
-            "category_id": category_id,
-        },
-    )
+def update_category(category_id, name, description):
+    session = Session()
+    category = session.get(Category, category_id)
+    if category:
+        category.name = name
+        category.description = description
+        session.commit()
+
+
+def update_product(product_id, name, description, price, stock, category_id):
+    session = Session()
+    product = session.get(Product, product_id)
+    if product:
+        product.name = name
+        product.description = description
+        product.price = price
+        product.stock = stock
+        product.category_id = category_id
+        session.commit()
+
+
+def delete_category(category_id):
+    session = Session()
+    category = session.get(Category, category_id)
+    if category:
+        session.delete(category)
+        session.commit()
 
 
 def delete_product(product_id):
-    SQL = """
-    DELETE FROM products
-    WHERE id = :product_id;
-    """
-    execute_write(SQL, {"product_id": product_id})
+    session = Session()
+    product = session.get(Product, product_id)
+    if product:
+        session.delete(product)
+        session.commit()
