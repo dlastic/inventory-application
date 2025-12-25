@@ -21,7 +21,7 @@ class ProductForm(FlaskForm):
 def handle_product_form(form: ProductForm, product=None, categories=None):
     if categories is None:
         categories = queries.get_all_categories()
-    form.category_id.choices = [(cat["id"], cat["name"]) for cat in categories]
+    form.category_id.choices = [(cat.id, cat.name) for cat in categories]
 
     if product and request.method == "GET":
         form.process(obj=product)

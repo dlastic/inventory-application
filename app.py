@@ -100,7 +100,7 @@ def list_products():
 @app.route("/products/<int:product_id>")
 def view_product(product_id):
     product = queries.get_product_by_id(product_id)
-    category = queries.get_category_by_id(product["category_id"])
+    category = queries.get_category_by_id(product.category_id)
     return render_template("product.html", product=product, category=category)
 
 
@@ -155,7 +155,7 @@ def edit_product(product_id):
 
     if data:
         try:
-            queries.edit_product(product_id, **data)
+            queries.update_product(product_id, **data)
             flash(
                 f'Product "{data["name"]}" was successfully updated in the "{category_name}" category.',
                 "success",
