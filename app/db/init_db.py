@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
-from db.connection import engine
-from db.models import Base, Category, Product
+from .connection import engine
+from .models import Base, Category, Product
 
 
 def main() -> None:

@@ -1,8 +1,8 @@
 from sqlalchemy import select
 from sqlalchemy.orm import sessionmaker
 
-from db.connection import engine
-from db.models import Category, Product
+from .connection import engine
+from .models import Category, Product
 
 Session = sessionmaker(bind=engine)
 

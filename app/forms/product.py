@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import DecimalField, IntegerField, SelectField, StringField, TextAreaField
 from wtforms.validators import DataRequired, InputRequired, Length, NumberRange
 
-from db import queries
+from app.db import queries
 
 
 class ProductForm(FlaskForm):

@@ -1,13 +1,10 @@
-import os
-
-from flask import Flask, flash, redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, request, url_for
 from sqlalchemy.exc import IntegrityError
 
-from db import queries
-from forms import CategoryForm, ProductForm, handle_product_form
+from app import app
 
-app = Flask(__name__)
-app.secret_key = os.getenv("SECRET_KEY")
+from .db import queries
+from .forms import CategoryForm, ProductForm, handle_product_form
 
 
 @app.route("/")
