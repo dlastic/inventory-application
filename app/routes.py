@@ -1,15 +1,46 @@
-from flask import flash, redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, request, session, url_for
 from sqlalchemy.exc import IntegrityError
+from werkzeug.security import check_password_hash
 
 from app import app
 
 from .db import queries
-from .forms import CategoryForm, ProductForm, handle_product_form
+from .forms import CategoryForm, LoginForm, ProductForm, handle_product_form
+from .utils.utils import admin_required
 
 
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        pwhash = app.config["ADMIN_PASSWORD_HASH"]
+        password = form.password.data
+        if check_password_hash(pwhash, password):
+            session["is_admin"] = True
+            flash("Logged in successfully.", "success")
+            return redirect(url_for("index"))
+        flash("Invalid password.", "error")
+    return render_template(
+        "category_form.html",
+        form=form,
+        title="Admin Login",
+        button_text="Log In",
+        button_class="btn--confirm",
+        cancel_url=url_for("index"),
+        action_url=url_for("login"),
+    )
+
+
+@app.route("/logout")
+def logout():
+    session.pop("is_admin", None)
+    flash("Logged out successfully.", "success")
+    return redirect(url_for("index"))
 
 
 @app.route("/categories")
@@ -49,6 +80,7 @@ def add_category():
 
 
 @app.route("/categories/<int:category_id>/edit", methods=["GET", "POST"])
+@admin_required
 def edit_category(category_id):
     if category_id == 1:
         flash("The default category cannot be edited.", "error")
@@ -77,6 +109,7 @@ def edit_category(category_id):
 
 
 @app.route("/categories/<int:category_id>/delete", methods=["POST"])
+@admin_required
 def delete_category(category_id):
     if category_id == 1:
         flash("The default category cannot be deleted.", "error")
@@ -141,6 +174,7 @@ def add_product():
 
 
 @app.route("/products/<int:product_id>/edit", methods=["GET", "POST"])
+@admin_required
 def edit_product(product_id):
     product = queries.get_product_by_id(product_id)
     if not product:
@@ -173,6 +207,7 @@ def edit_product(product_id):
 
 
 @app.route("/products/<int:product_id>/delete", methods=["POST"])
+@admin_required
 def delete_product(product_id):
     queries.delete_product(product_id)
     flash("Product deleted successfully.", "success")
