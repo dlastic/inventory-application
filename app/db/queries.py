@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import sessionmaker
 
 from .connection import engine
@@ -38,6 +38,16 @@ def get_products_by_category(category_id):
         .order_by(Product.name.asc())
     )
     return session.scalars(stmt).all()
+
+
+def get_product_count_by_category(category_id):
+    session = Session()
+    stmt = (
+        select(func.count())
+        .select_from(Product)
+        .where(Product.category_id == category_id)
+    )
+    return session.scalar(stmt)
 
 
 def add_category(name, description):

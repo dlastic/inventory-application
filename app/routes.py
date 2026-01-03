@@ -115,9 +115,14 @@ def delete_category(category_id):
         flash("The default category cannot be deleted.", "error")
         return redirect(url_for("list_categories"))
 
+    count = queries.get_product_count_by_category(category_id)
     queries.delete_category(category_id)
     flash("Category deleted successfully.", "success")
-    flash('Deleted products moved to default category ("Uncategorized")', "success")
+    if count > 0:
+        flash(
+            f'{count} deleted products moved to default category ("Uncategorized")',
+            "success",
+        )
     return redirect(url_for("list_categories"))
 
 
