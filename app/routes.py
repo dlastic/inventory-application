@@ -26,7 +26,7 @@ def login():
             return redirect(url_for("index"))
         flash("Invalid password.", "error")
     return render_template(
-        "category_form.html",
+        "form.html",
         form=form,
         title="Admin Login",
         button_text="Log In",
@@ -69,7 +69,7 @@ def add_category():
             flash(f'Category "{name}" already exists.', "error")
 
     return render_template(
-        "category_form.html",
+        "form.html",
         form=form,
         title="Add Category",
         button_text="Add Category",
@@ -98,7 +98,7 @@ def edit_category(category_id):
             flash(f'Category "{name}" already exists.', "error")
 
     return render_template(
-        "category_form.html",
+        "form.html",
         form=form,
         title=f"{category.name} – Edit Category",
         button_text="Edit Category",
@@ -163,7 +163,7 @@ def add_product():
     )
 
     return render_template(
-        "product_form.html",
+        "form.html",
         form=form,
         title="Add Product",
         button_text="Add Product",
@@ -196,7 +196,7 @@ def edit_product(product_id):
             flash(f'Product "{data["name"]}" already exists.', "error")
 
     return render_template(
-        "product_form.html",
+        "form.html",
         form=form,
         title="Edit Product",
         button_text="Save Changes",
