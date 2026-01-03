@@ -209,6 +209,7 @@ def edit_product(product_id):
 @app.route("/products/<int:product_id>/delete", methods=["POST"])
 @admin_required
 def delete_product(product_id):
+    product = queries.get_product_by_id(product_id)
     queries.delete_product(product_id)
     flash("Product deleted successfully.", "success")
-    return redirect(url_for("list_products"))
+    return redirect(url_for("view_category", category_id=product.category_id))
