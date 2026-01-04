@@ -8,14 +8,14 @@
       Browse our categories or view all products.
     </p>
     <div class="card-container">
-      <a class="card" href="{{ url_for('list_categories') }}">
+      <a class="card" href="{{ url_for('categories.list_categories') }}">
         <div>
           <h3>Browse Categories</h3>
           <p>Explore items by type.</p>
         </div>
         <span class="action-arrow">➜</span>
       </a>
-      <a class="card" href="{{ url_for('list_products') }}">
+      <a class="card" href="{{ url_for('products.list_products') }}">
         <div>
           <h3>View All Products</h3>
           <p>See everything in one list.</p>

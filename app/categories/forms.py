@@ -5,4 +5,4 @@ from wtforms.validators import DataRequired, Length
 
 class CategoryForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired(), Length(max=50)])
-    description = TextAreaField("Description", validators=[DataRequired()],)
+    description = TextAreaField("Description", validators=[DataRequired()])

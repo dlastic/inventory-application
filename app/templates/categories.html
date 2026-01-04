@@ -5,7 +5,7 @@
     <h2>Product Categories</h2>
     <div class="card-container">
       {% for category in categories %}
-        <a class="card" href="{{ url_for('view_category', category_id=category.id) }}">
+        <a class="card" href="{{ url_for('categories.view_category', category_id=category.id) }}">
           <h3>{{ category.name }}</h3>
         </a>
       {% else %}
@@ -13,7 +13,7 @@
       {% endfor %}
 
       <div class="form__actions">
-        <a class="btn btn--add" href="{{ url_for('add_category') }}">Add Category</a>
+        <a class="btn btn--add" href="{{ url_for('categories.add_category') }}">Add Category</a>
       </div>
     </div>
   </section>
