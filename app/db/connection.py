@@ -3,6 +3,7 @@ import sqlite3
 
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, event
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 load_dotenv()
 db_url = os.getenv("DB_URL")
@@ -10,6 +11,9 @@ if db_url is None:
     raise ValueError("DB_URL environment variable not set")
 
 engine = create_engine(db_url)
+db_session = scoped_session(
+    sessionmaker(autocommit=False, autoflush=False, bind=engine)
+)
 
 
 @event.listens_for(engine, "connect")

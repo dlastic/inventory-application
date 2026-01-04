@@ -2,10 +2,16 @@ from flask import Flask
 
 from config import Config
 
+from .db.connection import db_session
+
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+
+    @app.teardown_appcontext
+    def shutdown_session(exception=None):
+        db_session.remove()
 
     from .categories.routes import categories_bp
     from .main.routes import main_bp
