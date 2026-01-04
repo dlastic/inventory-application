@@ -21,7 +21,7 @@
       {% endfor %}
 
       <div class="form__actions">
-        {% if category and category.id != 1 %}
+        {% if category and category.id != config['DEFAULT_CATEGORY_ID'] %}
           <a class="btn btn--edit"
              href="{{ url_for('categories.edit_category', category_id=category.id, cancel=url_for('categories.view_category', category_id=category.id) ) }}">Edit Category</a>
 

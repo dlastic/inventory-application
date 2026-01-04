@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy import ForeignKey, Integer, Numeric, String, Text, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
+from config import Config
 
 class Base(DeclarativeBase):
     pass
@@ -32,8 +33,8 @@ class Product(Base):
     category_id: Mapped[int] = mapped_column(
         Integer,
         ForeignKey("categories.id", ondelete="SET DEFAULT"),
-        server_default="1",
-        default=1,
+        server_default=str(Config.DEFAULT_CATEGORY_ID),
+        default=Config.DEFAULT_CATEGORY_ID,
     )
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(

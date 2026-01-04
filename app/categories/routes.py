@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, redirect, render_template, url_for
+from flask import Blueprint, current_app, flash, redirect, render_template, url_for
 from sqlalchemy.exc import IntegrityError
 
 from ..db import queries
@@ -47,7 +47,7 @@ def add_category():
 @categories_bp.route("/<int:category_id>/edit", methods=["GET", "POST"])
 @admin_required
 def edit_category(category_id):
-    if category_id == 1:
+    if category_id == current_app.config["DEFAULT_CATEGORY_ID"]:
         flash("The default category cannot be edited.", "error")
         return redirect(url_for("categories.list_categories"))
 
@@ -78,7 +78,7 @@ def edit_category(category_id):
 @categories_bp.route("/<int:category_id>/delete", methods=["POST"])
 @admin_required
 def delete_category(category_id):
-    if category_id == 1:
+    if category_id == current_app.config["DEFAULT_CATEGORY_ID"]:
         flash("The default category cannot be deleted.", "error")
         return redirect(url_for("categories.list_categories"))
 
@@ -86,8 +86,9 @@ def delete_category(category_id):
     queries.delete_category(category_id)
     flash("Category deleted successfully.", "success")
     if count > 0:
+        default_name = current_app.config["DEFAULT_CATEGORY_NAME"]
         flash(
-            f'{count} deleted products moved to default category ("Uncategorized")',
+            f'{count} deleted products moved to default category ("{default_name}")',
             "success",
         )
     return redirect(url_for("categories.list_categories"))

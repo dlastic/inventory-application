@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, current_app, flash, redirect, render_template, request, url_for
 from sqlalchemy.exc import IntegrityError
 
 from ..db import queries
@@ -42,7 +42,9 @@ def add_product():
 
     selected_category_id = request.args.get("category_id", type=int)
     if request.method == "GET":
-        form.category_id.data = selected_category_id or 1
+        form.category_id.data = (
+            selected_category_id or current_app.config["DEFAULT_CATEGORY_ID"]
+        )
     elif request.method == "POST":
         selected_category_id = form.category_id.data
 

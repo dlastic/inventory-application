@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 
+from config import Config
 from .connection import engine
 from .models import Base, Category, Product
 
@@ -9,7 +10,7 @@ def main() -> None:
     Base.metadata.create_all(engine)
 
     categories_data = [
-        ("Uncategorized", "Default category for uncategorized products"),
+        (Config.DEFAULT_CATEGORY_NAME, "Default category for uncategorized products"),
         ("Computers & Laptops", "Desktops, laptops, and accessories"),
         ("Phones & Tablets", "Smartphones, tablets, and related devices"),
         ("TVs & Audio", "Televisions, sound systems, and audio equipment"),
