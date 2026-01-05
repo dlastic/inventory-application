@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from sqlalchemy import func, select
 
 from .connection import db_session
@@ -10,8 +12,7 @@ def get_all_categories() -> list[Category]:
 
 
 def get_category_by_id(category_id: int) -> Category | None:
-    stmt = select(Category).where(Category.id == category_id)
-    return db_session.scalars(stmt).first()
+    return db_session.get(Category, category_id)
 
 
 def get_all_products() -> list[Product]:
@@ -41,7 +42,7 @@ def add_category(name: str, description: str) -> None:
 def add_product(
     name: str,
     description: str,
-    price: float,
+    price: Decimal,
     stock: int,
     category_id: int,
 ) -> None:
@@ -68,7 +69,7 @@ def update_product(
     product_id: int,
     name: str,
     description: str,
-    price: float,
+    price: Decimal,
     stock: int,
     category_id: int,
 ) -> None:
