@@ -23,15 +23,6 @@ def get_product_by_id(product_id):
     return db_session.get(Product, product_id)
 
 
-def get_products_by_category(category_id):
-    stmt = (
-        select(Product)
-        .where(Product.category_id == category_id)
-        .order_by(Product.name.asc())
-    )
-    return db_session.scalars(stmt).all()
-
-
 def get_product_count_by_category(category_id):
     stmt = (
         select(func.count())

@@ -1,4 +1,12 @@
-from flask import Blueprint, current_app, flash, redirect, render_template, request, url_for
+from flask import (
+    Blueprint,
+    current_app,
+    flash,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from sqlalchemy.exc import IntegrityError
 
 from ..db import queries
@@ -18,8 +26,7 @@ def list_products():
 @products_bp.route("/<int:product_id>")
 def view_product(product_id):
     product = queries.get_product_by_id(product_id)
-    category = queries.get_category_by_id(product.category_id)
-    return render_template("product.html", product=product, category=category)
+    return render_template("product.html", product=product)
 
 
 @products_bp.route("/add", methods=["GET", "POST"])

@@ -17,8 +17,9 @@ def list_categories():
 @categories_bp.route("/<int:category_id>")
 def view_category(category_id):
     category = queries.get_category_by_id(category_id)
-    products = queries.get_products_by_category(category_id)
-    return render_template("products.html", category=category, products=products)
+    return render_template(
+        "products.html", category=category, products=category.products
+    )
 
 
 @categories_bp.route("/add", methods=["GET", "POST"])
