@@ -1,10 +1,17 @@
+from typing import Sequence
+
 from flask import request
 
 from ..db import queries
+from ..db.models import Category, Product
 from .forms import ProductForm
 
 
-def handle_product_form(form: ProductForm, product=None, categories=None):
+def handle_product_form(
+    form: ProductForm,
+    product: Product | None = None,
+    categories: Sequence[Category] | None = None,
+) -> tuple[dict, str | None] | tuple[None, None]:
     if categories is None:
         categories = queries.get_all_categories()
     form.category_id.choices = [(cat.id, cat.name) for cat in categories]
@@ -20,14 +27,9 @@ def handle_product_form(form: ProductForm, product=None, categories=None):
             "stock": form.stock.data,
             "category_id": form.category_id.data,
         }
-        category_name = next(
-            (
-                choice[1]
-                for choice in form.category_id.choices
-                if choice[0] == form.category_id.data
-            ),
-            None,
+        selected_category_name = next(
+            (cat.name for cat in categories if cat.id == form.category_id.data), None
         )
 
-        return data, category_name
+        return data, selected_category_name
     return None, None
