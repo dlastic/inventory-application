@@ -1,4 +1,5 @@
 from decimal import Decimal
+from typing import Sequence
 
 from sqlalchemy import func, select
 
@@ -6,7 +7,7 @@ from .connection import db_session
 from .models import Category, Product
 
 
-def get_all_categories() -> list[Category]:
+def get_all_categories() -> Sequence[Category]:
     stmt = select(Category).order_by(Category.name.asc())
     return db_session.scalars(stmt).all()
 
@@ -15,7 +16,7 @@ def get_category_by_id(category_id: int) -> Category | None:
     return db_session.get(Category, category_id)
 
 
-def get_all_products() -> list[Product]:
+def get_all_products() -> Sequence[Product]:
     stmt = select(Product).order_by(Product.name.asc())
     return db_session.scalars(stmt).all()
 

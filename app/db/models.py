@@ -5,6 +5,8 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 from config import Config
 
+from decimal import Decimal
+
 
 class Base(DeclarativeBase):
     pass
@@ -35,7 +37,7 @@ class Product(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(50), unique=True)
     description: Mapped[str] = mapped_column(Text)
-    price: Mapped[Numeric] = mapped_column(Numeric(10, 2))
+    price: Mapped[Decimal] = mapped_column(Numeric(10, 2))
     stock: Mapped[int] = mapped_column(default=0)
     category_id: Mapped[int] = mapped_column(
         Integer,
