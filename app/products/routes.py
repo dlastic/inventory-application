@@ -26,6 +26,10 @@ def list_products():
 @products_bp.route("/<int:product_id>")
 def view_product(product_id):
     product = queries.get_product_by_id(product_id)
+    if product is None:
+        flash("Product not found.", "error")
+        return redirect(url_for("products.list_products"))
+
     return render_template("product.html", product=product)
 
 
@@ -109,6 +113,10 @@ def edit_product(product_id):
 @admin_required
 def delete_product(product_id):
     product = queries.get_product_by_id(product_id)
+    if product is None:
+        flash("Product not found.", "error")
+        return redirect(url_for("products.list_products"))
+
     queries.delete_product(product_id)
     flash("Product deleted successfully.", "success")
     return redirect(

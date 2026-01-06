@@ -17,6 +17,10 @@ def list_categories():
 @categories_bp.route("/<int:category_id>")
 def view_category(category_id):
     category = queries.get_category_by_id(category_id)
+    if category is None:
+        flash("Category not found.", "error")
+        return redirect(url_for("categories.list_categories"))
+
     return render_template(
         "products.html", category=category, products=category.products
     )
@@ -53,6 +57,10 @@ def edit_category(category_id):
         return redirect(url_for("categories.list_categories"))
 
     category = queries.get_category_by_id(category_id)
+    if category is None:
+        flash("Category not found.", "error")
+        return redirect(url_for("categories.list_categories"))
+
     form = CategoryForm(obj=category)
     if form.validate_on_submit():
         try:
@@ -81,6 +89,11 @@ def edit_category(category_id):
 def delete_category(category_id):
     if category_id == current_app.config["DEFAULT_CATEGORY_ID"]:
         flash("The default category cannot be deleted.", "error")
+        return redirect(url_for("categories.list_categories"))
+
+    category = queries.get_category_by_id(category_id)
+    if category is None:
+        flash("Category not found.", "error")
         return redirect(url_for("categories.list_categories"))
 
     count = queries.get_product_count_by_category(category_id)
