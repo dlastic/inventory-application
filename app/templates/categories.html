@@ -3,18 +3,26 @@
 {% block content %}
   <section>
     <h2>Product Categories</h2>
-    <div class="card-container">
-      {% for category in categories %}
-        <a class="card" href="{{ url_for('categories.view_category', category_id=category.id) }}">
-          <h3>{{ category.name }}</h3>
-        </a>
-      {% else %}
-        <p>No categories available.</p>
-      {% endfor %}
 
-      <div class="form__actions">
-        <a class="btn btn--add" href="{{ url_for('categories.add_category') }}">Add Category</a>
-      </div>
+    <div class="row g-3 mt-3">
+      {% for category in categories %}
+        <div class="col-sm-6 col-md-4">
+          <a href="{{ url_for('categories.view_category', category_id=category.id) }}"
+             class="card h-100 text-decoration-none text-body">
+            <div class="card-body">
+              <h5 class="card-title mb-0">{{ category.name }}</h5>
+            </div>
+          </a>
+        </div>
+      {% else %}
+        <div class="col-12">
+          <div class="alert alert-secondary">No categories available.</div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="mt-4">
+      <a class="btn btn-success" href="{{ url_for('categories.add_category') }}">Add Category</a>
     </div>
   </section>
 {% endblock content %}

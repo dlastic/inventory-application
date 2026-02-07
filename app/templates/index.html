@@ -7,21 +7,28 @@
       ElectroStore is your one-stop shop for electronics, gadgets, and home appliances.
       Browse our categories or view all products.
     </p>
-    <div class="card-container">
-      <a class="card" href="{{ url_for('categories.list_categories') }}">
-        <div>
-          <h3>Browse Categories</h3>
-          <p>Explore items by type.</p>
-        </div>
-        <span class="action-arrow">➜</span>
-      </a>
-      <a class="card" href="{{ url_for('products.list_products') }}">
-        <div>
-          <h3>View All Products</h3>
-          <p>See everything in one list.</p>
-        </div>
-        <span class="action-arrow">➜</span>
-      </a>
+
+    <div class="row gy-3 mt-3">
+      <div class="col-md-6">
+        <a class="card h-100 text-decoration-none text-body"
+           href="{{ url_for('categories.list_categories') }}">
+          <div class="card-body">
+            <h5 class="card-title">Browse Categories</h5>
+            <p class="card-text">Explore items by type.</p>
+          </div>
+          <div class="card-footer bg-transparent border-0 text-end">➜</div>
+        </a>
+      </div>
+
+      <div class="col-md-6">
+        <a class="card h-100 text-decoration-none text-body" href="{{ url_for('products.list_products') }}">
+          <div class="card-body">
+            <h5 class="card-title">View All Products</h5>
+            <p class="card-text">See everything in one list.</p>
+          </div>
+          <div class="card-footer bg-transparent border-0 text-end">➜</div>
+        </a>
+      </div>
     </div>
   </section>
 {% endblock content %}
