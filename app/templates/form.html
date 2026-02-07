@@ -3,20 +3,37 @@
 {% block content %}
   <section>
     <h2>{{ title }}</h2>
-    <form class="form" method="post" action="{{ action_url }}" novalidate>
+
+    <form method="post" action="{{ action_url }}" novalidate class="needs-validation">
       {{ form.hidden_tag() }}
 
       {% for field in form %}
         {% if field.type != 'CSRFTokenField' %}
-          {{ field.label }}
-          {{ field }}
-          {% for error in field.errors %}<div class="form-error">{{ error }}</div>{% endfor %}
+          <div class="mb-3">
+            {{ field.label(class="form-label") }}
+            {% if field.type in ['StringField', 'TextAreaField', 'DecimalField', 'IntegerField', 'PasswordField', 'EmailField'] %}
+              {{ field(class="form-control") }}
+            {% elif field.type in ['SelectField', 'QuerySelectField'] %}
+              {{ field(class="form-select") }}
+            {% elif field.type in ['BooleanField'] %}
+              <div class="form-check">
+                {{ field(class="form-check-input", id=field.id) }}
+                <label class="form-check-label" for="{{ field.id }}">{{ field.label.text }}</label>
+              </div>
+            {% elif field.type in ['FileField'] %}
+              {{ field(class="form-control") }}
+            {% else %}
+              {{ field(class="form-control") }}
+            {% endif %}
+
+            {% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+          </div>
         {% endif %}
       {% endfor %}
 
-      <div class="form__actions">
-        <button class="btn {{ button_class }}" type="submit">{{ button_text }}</button>
-        <a class="btn btn--cancel" href="{{ cancel_url }}">Cancel</a>
+      <div class="d-flex gap-2">
+        <button class="btn {{ button_class or 'btn-success' }}" type="submit">{{ button_text }}</button>
+        <a class="btn btn-secondary" href="{{ cancel_url }}">Cancel</a>
       </div>
     </form>
   </section>
