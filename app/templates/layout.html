@@ -54,9 +54,11 @@
       {% endif %}
     {% endwith %}
 
-    <main>
-      {% block content %}
-      {% endblock content %}
+    <main class="py-4">
+      <div class="container">
+        {% block content %}
+        {% endblock content %}
+      </div>
     </main>
 
     <footer>
