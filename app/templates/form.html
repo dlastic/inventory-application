@@ -32,7 +32,7 @@
       {% endfor %}
 
       <div class="d-flex gap-2">
-        <button class="btn {{ button_class or 'btn-success' }}" type="submit">{{ button_text }}</button>
+        <button class="btn {{ button_class }}" type="submit">{{ button_text }}</button>
         <a class="btn btn-secondary" href="{{ cancel_url }}">Cancel</a>
       </div>
     </form>

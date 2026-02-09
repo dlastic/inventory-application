@@ -43,7 +43,7 @@ def add_category():
         form=form,
         title="Add Category",
         button_text="Add Category",
-        button_class="btn--add",
+        button_class="btn-success",
         cancel_url=url_for("categories.list_categories"),
         action_url=url_for("categories.add_category"),
     )
@@ -78,7 +78,7 @@ def edit_category(category_id):
         form=form,
         title=f"{category.name} – Edit Category",
         button_text="Edit Category",
-        button_class="btn--edit",
+        button_class="btn-warning",
         cancel_url=url_for("categories.view_category", category_id=category.id),
         action_url=url_for("categories.edit_category", category_id=category.id),
     )

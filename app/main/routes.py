@@ -35,7 +35,7 @@ def login():
         form=form,
         title="Admin Login",
         button_text="Log In",
-        button_class="btn--confirm",
+        button_class="btn-primary",
         cancel_url=url_for("main.index"),
         action_url=url_for("main.login"),
     )

@@ -70,7 +70,7 @@ def add_product():
         form=form,
         title="Add Product",
         button_text="Add Product",
-        button_class="btn--add",
+        button_class="btn-success",
         cancel_url=cancel_url,
         action_url=url_for("products.add_product"),
     )
@@ -103,7 +103,7 @@ def edit_product(product_id):
         form=form,
         title="Edit Product",
         button_text="Save Changes",
-        button_class="btn--edit",
+        button_class="btn-warning",
         cancel_url=url_for("products.view_product", product_id=product_id),
         action_url=url_for("products.edit_product", product_id=product_id),
     )
