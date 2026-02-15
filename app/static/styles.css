@@ -1,0 +1,8 @@
+.alert {
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+
+.alert.fade-out {
+  opacity: 0;
+}
