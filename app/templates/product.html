@@ -44,25 +44,34 @@
           <p class="mt-2">{{ product.description }}</p>
         </div>
 
-        <div class="d-flex flex-wrap gap-2">
-          <a class="btn btn-warning" href="{{ url_for('products.edit_product', product_id=product.id) }}">Edit Product</a>
+        <div class="row row-cols-1 row-cols-sm-2 g-2">
+          <div class="col">
+            <a class="btn btn-warning w-100" href="{{ url_for('products.edit_product', product_id=product.id) }}">Edit Product</a>
+          </div>
 
-          <form id="deleteProductForm"
-                method="post"
-                action="{{ url_for('products.delete_product', product_id=product.id) }}"
-                class="d-inline">
-            <button type="button"
-                    class="btn btn-danger"
-                    data-bs-toggle="modal"
-                    data-bs-target="#confirmDeleteModal"
-                    data-form-id="deleteProductForm"
-                    data-item-name="this product">Delete Product</button>
-          </form>
+          <div class="col">
+            <form id="deleteProductForm"
+                  method="post"
+                  action="{{ url_for('products.delete_product', product_id=product.id) }}">
+              <button type="button"
+                      class="btn btn-danger w-100"
+                      data-bs-toggle="modal"
+                      data-bs-target="#confirmDeleteModal"
+                      data-form-id="deleteProductForm"
+                      data-item-name="this product">Delete Product</button>
+            </form>
+          </div>
 
-          <a class="btn btn-secondary"
-             href="{{ url_for('categories.view_category', category_id=product.category_id) }}">Back to Category</a>
-          <a class="btn btn-secondary" href="{{ url_for('products.list_products') }}">Back to Products</a>
+          <div class="col">
+            <a class="btn btn-secondary w-100"
+               href="{{ url_for('categories.view_category', category_id=product.category_id) }}">Back to Category</a>
+          </div>
+
+          <div class="col">
+            <a class="btn btn-secondary w-100" href="{{ url_for('products.list_products') }}">Back to Products</a>
+          </div>
         </div>
+
       </div>
     </div>
   </section>
