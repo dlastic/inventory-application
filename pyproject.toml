@@ -16,3 +16,6 @@ dependencies = [
 dev = [
     "djlint>=1.36.4",
 ]
+
+[tool.ruff]
+extend-select = ["ARG"]
