@@ -17,5 +17,5 @@ dev = [
     "djlint>=1.36.4",
 ]
 
-[tool.ruff]
+[tool.ruff.lint]
 extend-select = ["ARG"]
