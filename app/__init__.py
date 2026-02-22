@@ -10,7 +10,7 @@ def create_app():
     app.config.from_object(Config)
 
     @app.teardown_appcontext
-    def shutdown_session(exception=None):
+    def shutdown_session(exception=None):  # noqa: ARG001
         db_session.remove()
 
     from .categories.routes import categories_bp

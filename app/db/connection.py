@@ -17,7 +17,7 @@ db_session = scoped_session(
 
 
 @event.listens_for(engine, "connect")
-def enable_foreign_keys(dbapi_connection, connection_record):
+def enable_foreign_keys(dbapi_connection, connection_record):  # noqa: ARG001
     if isinstance(dbapi_connection, sqlite3.Connection):
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA foreign_keys=ON")
