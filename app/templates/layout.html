@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inventory Application</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.12.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" />
   </head>
@@ -32,8 +33,13 @@
                   <a class="nav-link" href="{{ url_for('main.login') }}">Login</a>
                 {% endif %}
               </li>
-              <li class="nav-item d-flex align-items-center my-2 my-md-0">
-                <button class="btn btn-sm btn-outline-light" onclick="toggleTheme()">Toggle</button>
+              <li class="nav-item">
+                <div class="vr d-none d-md-flex h-100 mx-md-2 text-white"></div>
+              </li>
+              <li class="nav-item d-flex align-items-center my-md-0" title="Toggle auto/dark/light theme">
+                <button id="themeToggleBtn" class="btn btn-sm nav-link btn-link">
+                  <i id="themeIcon" class="bi bi-circle-half"></i>
+                </button>
               </li>
             </ul>
           </div>
@@ -65,7 +71,7 @@
     <footer class="py-3 mt-auto">
       <div class="container text-center">
         <small class="text-body-secondary">© 2025 ElectroStore.</small>
-        <small class="text-secondary">Icon by <a href="https://www.flaticon.com/free-icons/ecommerce" title="ecommerce icons" target="_blank"> Arkinasi - Flaticon</a></small>
+        <small class="text-secondary">Icon by <a href="https://www.flaticon.com/free-icons/ecommerce" title="ecommerce icons" target="_blank"> Arkinasi – Flaticon</a></small>
       </div>
     </footer>
 
