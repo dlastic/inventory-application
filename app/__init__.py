@@ -9,6 +9,9 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
+    if app.config.get("ADMIN_PASSWORD_HASH") is None:
+        raise RuntimeError("ADMIN_PASSWORD_HASH is not configured.")
+
     @app.teardown_appcontext
     def shutdown_session(exception=None):  # noqa: ARG001
         db_session.remove()
