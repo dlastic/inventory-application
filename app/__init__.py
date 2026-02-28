@@ -11,6 +11,8 @@ def create_app():
 
     if app.config.get("ADMIN_PASSWORD_HASH") is None:
         raise RuntimeError("ADMIN_PASSWORD_HASH is not configured.")
+    if app.config.get("SECRET_KEY") is None:
+        raise RuntimeError("SECRET_KEY is not configured.")
 
     @app.teardown_appcontext
     def shutdown_session(exception=None):  # noqa: ARG001
