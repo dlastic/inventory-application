@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_wtf import CSRFProtect
 
 from config import Config
 
@@ -8,6 +9,8 @@ from .db.connection import db_session
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+
+    CSRFProtect(app)
 
     if app.config.get("ADMIN_PASSWORD_HASH") is None:
         raise RuntimeError("ADMIN_PASSWORD_HASH is not configured.")

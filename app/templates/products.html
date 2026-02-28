@@ -34,6 +34,7 @@
               method="post"
               action="{{ url_for('categories.delete_category', category_id=category.id) }}"
               class="d-inline">
+          {{ delete_form.hidden_tag() }}
           <button type="button"
                   class="btn btn-danger"
                   data-bs-toggle="modal"

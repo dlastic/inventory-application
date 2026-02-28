@@ -2,6 +2,7 @@ from flask import Blueprint, current_app, flash, redirect, render_template, url_
 from sqlalchemy.exc import IntegrityError
 
 from ..db import queries
+from ..main.forms import DeleteForm
 from ..main.utils import admin_required
 from .forms import CategoryForm
 
@@ -21,8 +22,12 @@ def view_category(category_id):
         flash("Category not found.", "error")
         return redirect(url_for("categories.list_categories"))
 
+    delete_form = DeleteForm()
     return render_template(
-        "products.html", category=category, products=category.products
+        "products.html",
+        category=category,
+        products=category.products,
+        delete_form=delete_form,
     )
 
 

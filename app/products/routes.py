@@ -10,6 +10,7 @@ from flask import (
 from sqlalchemy.exc import IntegrityError
 
 from ..db import queries
+from ..main.forms import DeleteForm
 from ..main.utils import admin_required
 from .forms import ProductForm
 from .utils import handle_product_form
@@ -30,7 +31,8 @@ def view_product(product_id):
         flash("Product not found.", "error")
         return redirect(url_for("products.list_products"))
 
-    return render_template("product.html", product=product)
+    delete_form = DeleteForm()
+    return render_template("product.html", product=product, delete_form=delete_form)
 
 
 @products_bp.route("/add", methods=["GET", "POST"])

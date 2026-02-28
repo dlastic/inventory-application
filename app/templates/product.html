@@ -53,6 +53,7 @@
             <form id="deleteProductForm"
                   method="post"
                   action="{{ url_for('products.delete_product', product_id=product.id) }}">
+              {{ delete_form.hidden_tag() }}
               <button type="button"
                       class="btn btn-danger w-100"
                       data-bs-toggle="modal"

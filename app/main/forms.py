@@ -5,3 +5,7 @@ from wtforms.validators import DataRequired
 
 class LoginForm(FlaskForm):
     password = StringField("Password", validators=[DataRequired()])
+
+
+class DeleteForm(FlaskForm):
+    pass
